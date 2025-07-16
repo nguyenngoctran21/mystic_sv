@@ -71,8 +71,23 @@ class AstrologyCalculator:
         return timezone(tf.timezone_at(lat=lat, lng=lon))
 
     def local_to_utc(self, date_str, time_str, tz):
-        dt_local = datetime.strptime(f"{date_str} {time_str}", "%d/%m/%Y %H:%M")
-        return tz.localize(dt_local).astimezone(timezone("UTC"))
+        try:
+            date_parts = date_str.strip().split("/")
+            time_parts = time_str.strip().split(":")
+
+            if len(date_parts) != 3:
+                raise ValueError("Ngày sinh phải ở định dạng dd/mm/yyyy")
+
+            if len(time_parts) != 2:
+                raise ValueError("Giờ sinh phải ở định dạng HH:MM")
+
+            day, month, year = map(int, date_parts)
+            hour, minute = map(int, time_parts)
+
+            dt_local = datetime(year, month, day, hour, minute)
+            return tz.localize(dt_local).astimezone(timezone("UTC"))
+        except Exception as e:
+            raise ValueError(f"Lỗi định dạng ngày giờ: {e}")
 
     def get_zodiac(self, degrees):
         for name, emoji, start_deg in reversed(self.ZODIAC_SIGNS):

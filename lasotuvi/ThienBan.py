@@ -45,7 +45,8 @@ class lapThienBan(object):
         self.chiThang = self.thangAm
         self.canThangTen = thienCan[self.canThang]['tenCan']
         self.canNamTen = thienCan[self.canNam]['tenCan']
-        self.chiThangTen = diaChi[self.thangAm % 12 + 2]['tenChi']
+        chiThangIndex = (self.thangAm + 1) % 12 + 1
+        self.chiThangTen = diaChi[chiThangIndex]['tenChi']
         self.chiNamTen = diaChi[self.chiNam]['tenChi']
 
         self.canNgay, self.chiNgay = canChiNgay(
